@@ -34,11 +34,13 @@
 					return isNaN(res) ? 0 : res;
 				}
 
-				$("input").change(function() {
+				var calc = function() {
 					var total = 10 * (parse('oop') + parse('moc') + parse('concurrency')) + 15 * (parse('opt1') + parse('opt2') + parse('opt3') + parse('opt4') + parse('opt5'));
 					var percent = (total / 105).toFixed(2);
 					$('#res').text(percent + ' %');
-				})
+				}
+
+				setInterval(calc, 100);
 			})
 		</script>
 	</head>
@@ -57,7 +59,6 @@
 			<li><label for="opt4">Option 4:</label><input id="opt4"></input></li>
 			<li><label for="opt5">Option 5:</label><input id="opt5"></input></li>
 		</ul>
-		<button>Calculate</button><br>
 		<h2>Result: <span id="res"></span></h2>
 	</body>
 </html>
