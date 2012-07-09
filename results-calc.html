@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<title>Results Calculator</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				var parse = function(id) {
+					return parseInt($('#' + id).val());
+				}
+
+				$("input").change(function() {
+					var total = 10 * (parse('oop') + parse('moc') + parse('concurrency')) + 15 * (parse('opt1') + parse('opt2') + parse('opt3') + parse('opt4') + parse('opt5'));
+					var percent = total / 105;
+					$('#res').text(percent + '%');
+				})
+			})
+		</script>
+	</head>
+
+	<body>
+		<ul>
+			<li><label for="oop">Object Oriented Programming:</label><input id="oop"></input></li>
+			<li><label for="moc">Models Of Computation:</label><input id="moc"></input></li>
+			<li><label for="concurrency">Concurrency:</label><input id="concurrency"></input></li>
+			<br>
+			<li><label for="opt1">Option 1:</label><input id="opt1"></input></li>
+			<li><label for="opt2">Option 2:</label><input id="opt2"></input></li>
+			<li><label for="opt3">Option 3:</label><input id="opt3"></input></li>
+			<li><label for="opt4">Option 4:</label><input id="opt4"></input></li>
+			<li><label for="opt5">Option 5:</label><input id="opt5"></input></li>
+		</ul>
+		<button>Calculate</button><br>
+		Result: <span id="res"></span>
+	</body>
+</html>
