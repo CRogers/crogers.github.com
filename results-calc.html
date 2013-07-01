@@ -1,7 +1,7 @@
-<html>
+<!doctype html>
+<html ng-app>
 	<head>
 		<title>Results Calculator</title>
-
 		<style>
 			body {
 				background: #33342D;
@@ -24,41 +24,78 @@
 				list-style: none;
 				text-indent: -10px;
 			}
+
+			a {
+				color: white;
+			}
+
+			a:visited {
+				color: gray;
+			}
 		</style>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+		<script type="text/javascript">
+			function ResultsCtrl($scope) {
+				$scope.scores = {
+					year2: [
+						{name: "Object Oriented Programming", score: 0, weight: 10},
+						{name: "Models of Computation", score: 0, weight: 10},
+						{name: "Concurrency", score: 0, weight: 10},
+						{name: "Option 1", score: 0, weight: 15},
+						{name: "Option 2", score: 0, weight: 15},
+						{name: "Option 3", score: 0, weight: 15},
+						{name: "Option 4", score: 0, weight: 15},
+						{name: "Option 5", score: 0, weight: 15}
+					],
+					year3: [
+						{name: "Project", score: 0, weight: 45},						
+						{name: "Option 1", score: 0, weight: 15},
+						{name: "Option 2", score: 0, weight: 15},
+						{name: "Option 3", score: 0, weight: 15},
+						{name: "Option 4", score: 0, weight: 15},
+						{name: "Option 5", score: 0, weight: 15},
+						{name: "Option 6", score: 0, weight: 15}
+					]
+				};
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-		<script>
-			$(document).ready(function() {
-				var parse = function(id) {
-					var res = parseInt($('#' + id).val());
-					return isNaN(res) ? 0 : res;
-				}
+				$scope.years = [
+					{name: '2nd', item: $scope.scores.year2},
+					{name: '3rd', item: $scope.scores.year3}
+				];
 
-				var calc = function() {
-					var total = 10 * (parse('oop') + parse('moc') + parse('concurrency')) + 15 * (parse('opt1') + parse('opt2') + parse('opt3') + parse('opt4') + parse('opt5'));
-					var percent = (total / 105).toFixed(2);
-					$('#res').text(percent + ' %');
-				}
+				$scope.total = function total(rows) {
+					var totalWeight = 0;
+					var totalScore = 0;
+					for (var i = 0; i < rows.length; i++) {
+						var row = rows[i];
+						totalWeight += row.weight;
+						totalScore += row.score * row.weight;
+					}
+					return (totalScore / totalWeight).toFixed(2);
+				};
 
-				setInterval(calc, 100);
-			})
+				$scope.scoresAllYears = function() {
+					return $scope.scores.year2.concat($scope.scores.year3);
+				};
+
+				$scope.Math = Math;
+			}
 		</script>
 	</head>
-
-	<body>
+	<body ng-controller="ResultsCtrl">
 		<h1>Results Calculator</h1>
-		<ul>
-			<li><h2>Core Modules</h2></li>
-			<li><label for="oop">Object Oriented Programming:</label><input id="oop"></input></li>
-			<li><label for="moc">Models Of Computation:</label><input id="moc"></input></li>
-			<li><label for="concurrency">Concurrency:</label><input id="concurrency"></input></li>
-			<li><h2>Options</h2></li>
-			<li><label for="opt1">Option 1:</label><input id="opt1"></input></li>
-			<li><label for="opt2">Option 2:</label><input id="opt2"></input></li>
-			<li><label for="opt3">Option 3:</label><input id="opt3"></input></li>
-			<li><label for="opt4">Option 4:</label><input id="opt4"></input></li>
-			<li><label for="opt5">Option 5:</label><input id="opt5"></input></li>
-		</ul>
-		<h2>Result: <span id="res"></span></h2>
+		Disclaimer: This is correct to the best of my knowledge, read the <a href="http://www.cs.ox.ac.uk/files/4944/Conventions%20Parts%20A%20and%20B%202012-13%20webversion.pdf">exam conventions</a> for the actual rules.
+		<div ng-repeat="year in years" ng-init="outerIndex=$index">
+			<h2>{{year.name}} Year</h2>
+			<ul>
+				<li ng-repeat="row in year.item">
+					<label for="y{{outerIndex}}-{{$index}}">{{row.name}}:</label>
+					<input id ="y{{outerIndex}}-{{$index}}" type="text" ng-model="row.score"></input>
+				</li>
+			</ul>
+			<h3>{{year.name}} Year Total: {{total(year.item)}} % rounded to: {{Math.round(total(year.item))}} %</h3>
+		</div>
+		<h2>Overall Total: {{total(scoresAllYears())}} % rounded to: {{Math.round(total(scoresAllYears()))}} %</h2>
+		See <a href="http://www.cs.ox.ac.uk/files/4944/Conventions%20Parts%20A%20and%20B%202012-13%20webversion.pdf">the Exam Conventions 2012/13 document</a> for more details.
 	</body>
 </html>
